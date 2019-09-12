@@ -13,6 +13,7 @@ import media from '../../theming/mediaQueries'
 import { useTheme } from '../../theming/context'
 import Highlight from '../Highlight'
 import CodeBlock from '../CodeBlock'
+import Clipboard from 'react-clipboard.js'
 
 const tabs = ['chart', 'code', 'data']
 
@@ -36,16 +37,19 @@ const ComponentTabs = ({
         availableTabs = availableTabs.filter(t => t !== 'data')
     }
 
+    let copyContent = ''
     let content
     if (currentTab === 'chart') {
         content = <Content id="chart">{children}</Content>
     } else if (currentTab === 'code') {
+        copyContent = code
         content = (
             <Code>
                 <Highlight code={code} language="jsx" />
             </Code>
         )
     } else if (availableTabs.includes('data') && currentTab === 'data') {
+        copyContent = JSON.stringify(data, null, '  ')
         content = (
             <Code>
                 <CodeBlock>{JSON.stringify(data, null, '  ')}</CodeBlock>
@@ -80,6 +84,9 @@ const ComponentTabs = ({
                         roll the dice
                     </DiceRollButton>
                 )}
+                <Clipboard data-clipboard-text={copyContent} button-title="Copied!">
+                    Copy
+                </Clipboard>
             </Nav>
             {content}
             {currentTab === 'chart' && nodeCount !== undefined && (

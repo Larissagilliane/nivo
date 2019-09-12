@@ -76,5 +76,8 @@
     "packages/*",
     "api",
     "website"
-  ]
+  ],
+  "dependencies": {
+    "react-clipboard.js": "^2.0.15"
+  }
 }
